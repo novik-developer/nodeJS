@@ -26,6 +26,7 @@ async function addNote(title) {
     };
     notes.push(note);
     await fs.writeFile(notePath, JSON.stringify(notes));
+    console.log(chalk.green(note));
 }
 
 async function remove(id) {
