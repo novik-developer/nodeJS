@@ -26,6 +26,7 @@ async function addNote(title) {
     };
     notes.push(note);
     await fs.writeFile(notePath, JSON.stringify(notes));
+    console.log(chalk.yellow("Added a new note."));
 }
 
 async function remove(id) {
@@ -44,9 +45,24 @@ async function getNotes() {
     return Array.isArray(JSON.parse(notes)) ? JSON.parse(notes) : [];
 }
 
+async function updateNote(id, data) {
+    const notes = await getNotes();
+    if (notes.find((note) => note.id === id)) {
+        const editNote = notes.map((note) => {
+            if (note.id === id) {
+                return { id, title: data.title };
+            }
+            return note;
+        });
+        await fs.writeFile(notePath, JSON.stringify(editNote));
+        console.log(chalk.yellow("Note updated."));
+    }
+}
+
 module.exports = {
     addNote,
     getNotes,
     remove,
     printNotes,
+    updateNote,
 };
